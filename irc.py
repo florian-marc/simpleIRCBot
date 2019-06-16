@@ -73,3 +73,16 @@ class IRC:
         else:
             self.authentify(botNick, botNick)
         self.joinChannel(channel)
+
+    def getResponse(self):
+        """Reads the response from the server
+        """
+        time.sleep(1)
+        # Get the response
+        resp = self.irc.recv(2040).decode("UTF-8")
+
+        if resp.find("PING") != -1:
+            self.irc.send(
+                bytes("PONG " + resp.split().decode("UTF-8")[1] + "\r\n", "UTF-8"))
+
+        return resp
