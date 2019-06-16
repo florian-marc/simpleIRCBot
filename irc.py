@@ -1,3 +1,4 @@
+import sys
 import socket
 import time
 
@@ -30,7 +31,7 @@ class IRC:
             port (integer): server port
         """
         # Connecting to server
-        print("Connecting to: " + server + ":" + port)
+        print("Connecting to: " + server + ":" + str(port))
         self.irc.connect((server, port))
 
     def authentify(self, botNick, botRealName):
@@ -79,10 +80,13 @@ class IRC:
         """
         time.sleep(1)
         # Get the response
-        resp = self.irc.recv(2040).decode("UTF-8")
+        resp = self.irc.recv(2040)
+        print(resp.decode("UTF-8"))
 
+
+        """
         if resp.find("PING") != -1:
             self.irc.send(
-                bytes("PONG " + resp.split().decode("UTF-8")[1] + "\r\n", "UTF-8"))
-
+                bytes("PONG " + resp.split()[1].decode() + "\r\n", "UTF-8"))
+        """
         return resp
