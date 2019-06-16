@@ -9,16 +9,17 @@ class IRC:
         # Define the socket
         self.irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def send(self, channel, msg):
-        """Sends a message in a channel
+    def sendPrivateMessage(self, receiver, msg):
+        """Sending a private message to a receiver or a list of receiver
 
         Args:
 
-            channel (string): channel name
-            msg (string): message to send through the channel
+            receiver (iterable<string>): The receiver(s) of the message. May be the nickname of the receiver, a list of names or channels separated by commas
+            msg (sting): The message to be sent
         """
-        # Sending a private message
-        self.irc.send(bytes("PRIVMSG " + channel + " " + msg + "\n", "UTF-8"))
+        self.irc.send(bytes("PRIVMSG " + ','.join(receiver) +
+                            " :" + msg + "\n", "UTF-8"))
+        time.sleep(5)
 
     def connect(self, server, port):
         """Connects to an IRC server
