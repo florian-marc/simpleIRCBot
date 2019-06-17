@@ -20,6 +20,7 @@ class IRC:
         """
         self.irc.send(bytes("PRIVMSG " + ','.join(receiver) +
                             " :" + msg + "\n", "UTF-8"))
+        print("PRIVMSG " + receiver + " :" + msg + "\n")
         time.sleep(5)
 
     def connect(self, server, port):
@@ -81,12 +82,10 @@ class IRC:
         time.sleep(1)
         # Get the response
         resp = self.irc.recv(2040)
-        print(resp.decode("UTF-8"))
-
-
-        """
-        if resp.find("PING") != -1:
+        if resp.decode("UTF-8", "ignore").find("PING") != -1:
+            print("RECEIVED PING\n" + resp.decode("UTF-8", "ignore") + "\n")
             self.irc.send(
-                bytes("PONG " + resp.split()[1].decode() + "\r\n", "UTF-8"))
-        """
-        return resp
+                bytes("PONG " + resp.decode("UTF-8", "ignore").split(" ")[1] + "\r\n", "UTF-8"))
+            print("SENT: \"" + "PONG " +
+                  resp.decode("UTF-8", "ignore").split(" ")[1] + "\"")
+        return resp.decode("UTF-8", "ignore")
